@@ -42,10 +42,9 @@ import traceback
 
 from oslo.config import cfg
 
-from nova.openstack.common.gettextutils import _
-from nova.openstack.common import importutils
-from nova.openstack.common import jsonutils
-from nova.openstack.common import local
+from qg.core.gettextutils import _
+from qg.core import jsonutils
+from qg.core import local
 
 
 _DEFAULT_LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -135,9 +134,6 @@ log_opts = [
                     'eventlet.wsgi.server=WARN'
                 ],
                 help='list of logger=LEVEL pairs'),
-    cfg.BoolOpt('publish_errors',
-                default=False,
-                help='publish error events'),
     cfg.BoolOpt('fatal_deprecations',
                 default=False,
                 help='make deprecations fatal'),
@@ -416,12 +412,6 @@ def _setup_logging_from_conf():
         # python2.6 calls the argument strm, in 2.7 it's stream
         streamlog = logging.StreamHandler(sys.stdout)
         log_root.addHandler(streamlog)
-
-    if CONF.publish_errors:
-        handler = importutils.import_object(
-            "nova.openstack.common.log_handler.PublishErrorsHandler",
-            logging.ERROR)
-        log_root.addHandler(handler)
 
     datefmt = CONF.log_date_format
     for handler in log_root.handlers:
