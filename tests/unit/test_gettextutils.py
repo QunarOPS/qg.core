@@ -35,10 +35,13 @@ class TestGettext(TestCase):
         #                 用中文
         localedir = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                                  '..', 'locale'))
+        cmd = ("msgfmt -o %s/zh_CN/LC_MESSAGES/testing.mo "
+               "%s/zh_CN/LC_MESSAGES/testing.po") % (localedir, localedir)
+        os.system(cmd)
         os.environ['TESTING_LOCALEDIR'] = localedir
         os.environ['LANGUAGE'] = 'zh_CN'
-        super(TestGettext, self).setUp()
         CONF.set_default('domain', 'testing', 'i18n')
+        super(TestGettext, self).setUp()
 
     def test_gettext_without_translation(self):
         self.assertEqual(_('Hello'), 'Hello')
