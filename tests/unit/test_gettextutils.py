@@ -17,13 +17,13 @@
 # Author: zhen.pei <zhen.pei@qunar.com>
 # Author: Jianing Yang <jianing.yang@qunar.com>
 #
-# TODO(jianingy): 加入 gettext.install 的测试
+
+from qg.core import gettextutils
+gettextutils.install('testing', lazy=True)
 
 from oslo.config import cfg
 from testtools import TestCase
 import os
-
-from qg.core.gettextutils import _
 
 CONF = cfg.CONF
 
@@ -39,7 +39,7 @@ class TestGettext(TestCase):
                "%s/zh_CN/LC_MESSAGES/testing.po") % (localedir, localedir)
         os.system(cmd)
         os.environ['TESTING_LOCALEDIR'] = localedir
-        os.environ['LANGUAGE'] = 'zh_CN'
+        os.environ['LC_ALL'] = 'zh_CN.UTF-8'
         CONF.set_default('domain', 'testing', 'i18n')
         super(TestGettext, self).setUp()
 
