@@ -39,12 +39,7 @@ class QExtensionManager(Observable):
 
     def __init__(self):
         super(QExtensionManager, self).__init__()
-        self.steps = [
-            "init_app",
-            "configure",
-            "run",
-            "shutdown"
-        ]
+        self.steps = ["init_app", "configure", "run", "shutdown"]
 
     def _try_add_listener(self, ext, evt_name):
         fn = getattr(ext, evt_name, None)
@@ -54,8 +49,8 @@ class QExtensionManager(Observable):
     def append(self, ext):
         assert(isinstance(ext, QExtension))
         for step in self.steps:
-            self._try_add_listener(ext, "%s_pre" % step)
-            self._try_add_listener(ext, "%s_post" % step)
+            self._try_add_listener(ext, "pre_%s" % step)
+            self._try_add_listener(ext, "post_%s" % step)
 
 
 class QExtension(object):
@@ -99,12 +94,12 @@ class QApplication(Singleton):
 
     def _step_invoke(self, fn_name):
         rlt = None
-        self._ext_mgr.fire_event("%s_pre" % fn_name, self)
+        self._ext_mgr.fire_event("pre_%s" % fn_name, self)
         try:
             rlt = getattr(self, fn_name)()
         except AttributeError:
             raise FunctionNotFoundError(fn_name=fn_name)
-        self._ext_mgr.fire_event("%s_post" % fn_name, self, rlt)
+        self._ext_mgr.fire_event("post_%s" % fn_name, self, rlt)
 
     def main(self):
         self._step_invoke("configure")

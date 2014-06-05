@@ -126,29 +126,29 @@ class TestQApplication(TestCase):
 
             name = "Extension1"
 
-            def init_app_pre(self, evt, app):
-                app.msg_trace.append("Extension1.init_app_pre()")
+            def pre_init_app(self, evt, app):
+                app.msg_trace.append("Extension1.pre_init_app()")
 
-            def init_app_post(self, evt, app, rlt):
-                app.msg_trace.append("Extension1.init_app_post()")
+            def post_init_app(self, evt, app, rlt):
+                app.msg_trace.append("Extension1.post_init_app()")
 
-            def configure_pre(self, evt, app):
-                app.msg_trace.append("Extension1.configure_pre()")
+            def pre_configure(self, evt, app):
+                app.msg_trace.append("Extension1.pre_configure()")
 
-            def configure_post(self, evt, app, rlt):
-                app.msg_trace.append("Extension1.configure_post()")
+            def post_configure(self, evt, app, rlt):
+                app.msg_trace.append("Extension1.post_configure()")
 
-            def run_pre(self, evt, app):
-                app.msg_trace.append("Extension1.run_pre()")
+            def pre_run(self, evt, app):
+                app.msg_trace.append("Extension1.pre_run()")
 
-            def run_post(self, evt, app, rlt):
-                app.msg_trace.append("Extension1.run_post()")
+            def post_run(self, evt, app, rlt):
+                app.msg_trace.append("Extension1.post_run()")
 
-            def shutdown_pre(self, evt, app):
-                app.msg_trace.append("Extension1.shutdown_pre()")
+            def pre_shutdown(self, evt, app):
+                app.msg_trace.append("Extension1.pre_shutdown()")
 
-            def shutdown_post(self, evt, app, rlt):
-                app.msg_trace.append("Extension1.shutdown_post()")
+            def post_shutdown(self, evt, app, rlt):
+                app.msg_trace.append("Extension1.post_shutdown()")
 
         class Extension2(QExtension):
 
@@ -157,8 +157,8 @@ class TestQApplication(TestCase):
             def __init__(self, i):
                 self.i = i
 
-            def init_app_post(self, evt, app, rlt):
-                app.msg_trace.append("Extension2.init_app_post(),i=%d" %
+            def post_init_app(self, evt, app, rlt):
+                app.msg_trace.append("Extension2.post_init_app(),i=%d" %
                                      self.i)
 
         t1 = TestApplication1()
@@ -166,17 +166,17 @@ class TestQApplication(TestCase):
             instance.return_value = ['test']
             t1.main()
         self.assertThat(t1.msg_trace, Equals([
-            'Extension1.init_app_pre()',
+            'Extension1.pre_init_app()',
             'init_app()',
-            'Extension1.init_app_post()',
-            'Extension2.init_app_post(),i=100',
-            'Extension1.configure_pre()',
+            'Extension1.post_init_app()',
+            'Extension2.post_init_app(),i=100',
+            'Extension1.pre_configure()',
             'configure()',
-            'Extension1.configure_post()',
-            'Extension1.run_pre()',
+            'Extension1.post_configure()',
+            'Extension1.pre_run()',
             'run()',
-            'Extension1.run_post()',
-            'Extension1.shutdown_pre()',
+            'Extension1.post_run()',
+            'Extension1.pre_shutdown()',
             'shutdown()',
-            'Extension1.shutdown_post()'
+            'Extension1.post_shutdown()'
         ]))
