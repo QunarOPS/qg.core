@@ -20,7 +20,6 @@ from testtools import TestCase
 
 import logging
 import mock
-import sys
 
 from qg.core.app.application import QApplication
 from qg.core.app.exts.log import QLogExtension
