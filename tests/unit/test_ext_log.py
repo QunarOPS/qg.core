@@ -17,13 +17,16 @@
 # Author: Jianing Yang <jianingy.yang@gmail.com>
 #
 from testtools import TestCase
+
+import logging
 import mock
+import sys
 
 from qg.core.app.application import QApplication
 from qg.core.app.exts.log import QLogExtension
-from qg.core import log as logging
+from qg.core import log
 
-LOG = logging.getLogger(__name__)
+LOG = log.getLogger(__name__)
 
 
 class TestApplication(QApplication):
@@ -38,10 +41,21 @@ class TestApplication(QApplication):
         LOG.warn('hello')
         super(TestApplication, self).init_app()
 
+    def run(self):
+        pass
+
 
 class TestLogExtension(TestCase):
 
     def test_create_log_extension(self):
         with mock.patch('qg.core.log.setup') as instance:
             app = TestApplication()
-            instance.assert_called_once_with('test-application1')
+            with mock.patch('sys.argv', ['test']):
+                app.main()
+                instance.assert_called_once_with('test-application1')
+
+    def test_set_log_level(self):
+        app = TestApplication()
+        with mock.patch('sys.argv', ['test', '--debug']):
+            app.main()
+            self.assertEqual(LOG.logger.getEffectiveLevel(), logging.DEBUG)

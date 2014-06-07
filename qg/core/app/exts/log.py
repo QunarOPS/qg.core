@@ -16,14 +16,17 @@
 #
 # Author: Jianing Yang <jianingy.yang@gmail.com>
 #
+from oslo.config import cfg
 
 from qg.core.app import QExtension
 from qg.core import log as logging
+
+CONF = cfg.CONF
 
 
 class QLogExtension(QExtension):
 
     name = 'Log'
 
-    def post_init_app(self, evt, app, rlt):
+    def post_configure(self, evt, app, rlt):
         logging.setup(app.name)
