@@ -35,6 +35,10 @@ class FunctionNotFoundError(exception.QException):
     message = "no such function %(fn_name)s to invoke."
 
 
+class QApplicationError(exception.QException):
+    message = "QApplication error: %(msg)s"
+
+
 class QExtensionManager(Observable):
 
     def __init__(self):
@@ -92,14 +96,22 @@ class QApplication(Singleton):
         cfg.CONF(argv[1:], project=self.name, version=self.version,
                  default_config_files=None)
 
-    def _step_invoke(self, fn_name):
+    def _step_invoke(self, fn_name, do_pre=True, do_fn=True, do_post=True):
+        fn = None
         rlt = None
-        self._ext_mgr.fire_event("pre_%s" % fn_name, self)
         try:
-            rlt = getattr(self, fn_name)()
+            fn = getattr(self, fn_name)
         except AttributeError:
             raise FunctionNotFoundError(fn_name=fn_name)
-        self._ext_mgr.fire_event("post_%s" % fn_name, self, rlt)
+        if not do_fn and do_post:
+            raise QApplicationError(
+                msg="Function %s must invoke if use do_post." % fn_name)
+        if do_pre:
+            self._ext_mgr.fire_event("pre_%s" % fn_name, self)
+        if do_fn:
+            rlt = fn()
+        if do_post:
+            self._ext_mgr.fire_event("post_%s" % fn_name, self, rlt)
 
     def main(self):
         self._step_invoke("configure")
