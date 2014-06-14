@@ -59,7 +59,9 @@ class QExtensionManager(Observable):
 
 class QExtension(object):
 
-    name = None
+    @property
+    def name(self):
+        return self.__class__.__name__
 
     def __init__(self):
         super(QExtension, self).__init__()
@@ -70,7 +72,6 @@ class QExtension(object):
 
 class QApplication(Singleton):
 
-    name = None
     version = None
 
     def init_singleton(self):
@@ -135,3 +136,7 @@ class QApplication(Singleton):
     def run(self):
         raise NotImplementedError(
             "app.run() is not implemented yet")
+
+    @property
+    def name(self):
+        return self.__class__.__name__
