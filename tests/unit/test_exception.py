@@ -31,6 +31,10 @@ class PlainException(QException):
     pass
 
 
+class NormalException(QException):
+    message = 'normal'
+
+
 def raise_format_exception():
     raise FormatException(reason='sample message')
 
@@ -58,3 +62,7 @@ class TestException(TestCase):
             raise_plain_exception()
         except PlainException as e:
             self.assertEqual(str(e), 'sample message')
+
+    def test_normal_exception(self):
+        e = NormalException('special')
+        self.assertEqual(e.message, 'special')
