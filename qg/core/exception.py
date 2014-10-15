@@ -74,7 +74,7 @@ class QException(Exception):
                 else:
                     # at least get the core message out if something happened
                     message = self.message
-
+        self.message = message
         super(QException, self).__init__(message)
 
     def format_message(self):
