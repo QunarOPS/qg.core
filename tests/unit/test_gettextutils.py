@@ -21,7 +21,7 @@
 from qg.core import gettextutils
 gettextutils.install('testing', lazy=True)
 
-from oslo.config import cfg
+from oslo_config import cfg
 from testtools import TestCase
 import os
 

@@ -1,4 +1,4 @@
 anyjson
 babel
 iso8601
-oslo.config
+oslo.config==1.12.0

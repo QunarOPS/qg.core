@@ -20,7 +20,7 @@
 
 import sys
 
-from oslo.config import cfg
+from oslo_config import cfg
 
 from qg.core import exception
 from qg.core.singleton import Singleton

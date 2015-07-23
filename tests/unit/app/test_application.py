@@ -65,7 +65,7 @@ class TestQApplication(TestCase):
             def run(self):
                 pass
 
-        with mock.patch('oslo.config.cfg.CONF') as instance:
+        with mock.patch('oslo_config.cfg.CONF') as instance:
             instance.return_value = True
             t1 = TestApplication1()
             self.assertRaises(NotImplementedError,

@@ -34,7 +34,7 @@ import os
 import re
 
 from babel import localedata
-from oslo.config import cfg
+from oslo_config import cfg
 import six
 
 i18n_opts = [

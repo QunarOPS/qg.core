@@ -16,7 +16,7 @@
 #
 # Author: Jianing Yang <jianingy.yang@gmail.com>
 #
-from oslo.config import cfg
+from oslo_config import cfg
 
 from qg.core.app import QExtension
 from qg.core import log as logging
