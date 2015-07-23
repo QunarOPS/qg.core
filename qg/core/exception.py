@@ -18,7 +18,7 @@
 
 import sys
 
-from oslo.config import cfg
+from oslo_config import cfg
 
 from qg.core.gettextutils import _
 from qg.core import log as logging
